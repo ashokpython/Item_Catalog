@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="short cut icon" href="{{url_for('static', filename='employee.png')}}">
+</head>
+
+
+<body>
+
+    {% block body %}
+    <div class="container">
+        <div class="well text-center">
+            <h1><strong>Employee Data Management</strong></h1>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col md-12">
+                    <h2>Employee List:
+                        <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#mymodal">Add Employee</button>
+                    </h2>
+
+                    {%with messages = get_flashed_messages()%}
+
+                    {%if messages%}
+
+                    {% for message in messages %}
+
+                    <div class="alert alert.success alert-dimissable" role = "alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+
+                        {{message}}
+                    </div>
+
+                    {%endfor%}
+
+                    {%endif%}
+
+                    {%endwith%}
+
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Date Of Birth</th>
+                            <th>Designation</th>
+                            <th>Salary</th>
+                            <th>Email</th>
+                            <th>Joining Date</th>
+                            <th>Work Location</th>
+                            <th>Experience</th>                            
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                        {% for row in employee %}
+
+                        <tr>
+                            <td>{{row.0}}</td>
+                            <td>{{row.1}}</td>
+                            <td>{{row.2}}</td>
+                            <td>{{row.3}}</td>
+                            <td>{{row.4}}</td>
+                            <td>{{row.5}}</td>
+                            <td>{{row.6}}</td>
+                            <td>{{row.7}}</td>
+                            <td>{{row.8}}</td>
+                            <td>{{row.9}}</td>
+                            <td>{{row.10}}</td>
+                            <td>
+                                <a href="/update/{{row.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</a>
+
+                                <a href="/delete/{{row.0}}" class="btn btn-danger btn-xs" data-toggle="modal" onclick="return confirm('Make sure that you really want to delete?')">Delete</a>
+                            </td>
+                        </tr>
+
+                        <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">
+                                        &times;</button>
+                                        <h4 class="modal-title">Please Update Employee Data</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <form action="{{url_for('update')}}" method="post">
+                                            <div class="form-group">
+                                                <label>Employee Id:</label>
+                                                <!-- <input type="hidden" name="id" value="{{row.0}}"> -->
+                                                <input type="text" class="form-control" name="id" value="{{row.0}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Name:</label>
+                                                
+                                                <input type="text" class="form-control" name="name" value="{{row.1}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Date of Birth:</label>
+                                                <input type="date" class="form-control" name="dob" required="1" value="{{row.2}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Designation:</label>
+                                                <input type="text" class="form-control" name="designation" required="1" value="{{row.3}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Salary:</label>
+                                                <input type="text" class="form-control" name="salary" required="1" value="{{row.4}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Email:</label>
+                                                <input type="email" class="form-control" name="emailaddress" value="{{row.5}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Date of Joining:</label>
+                                                <input type="date" class="form-control" name="joining_date" required="1" value="{{row.6}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Work Location:</label>
+                                                <input type="text" class="form-control" name="work_location" required="1" value="{{row.7}}">
+                                            </div>
+
+
+                                             <div class="form-group">
+                                                <label>Experience:</label>
+                                                <input type="text" class="form-control" name="experience" required="1" value="{{row.8}}">
+                                            </div>
+
+
+
+                                            <div class="form-group">
+                                                <label>Address:</label>
+                                                <input type="text" class="form-control" name="address" required="1" value="{{row.9}}">
+                                            </div>
+
+
+                                             <div class="form-group">
+                                                <label>Phone:</label>
+                                                <input type="tel" class="form-control" name="phone" pattern="[0-9]{10}" required value="{{row.10}}">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Update Employee Data</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div id="mymodal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">X</button>
+                        <h4 class="modal-title">Please Insert Employee Data</h4>
+                    </div>
+
+
+                    <div class="modal-body">
+
+                        <form action="{{url_for('insert')}}" method="post">
+                            <div class="form-group">
+                                                <label>Employee Id:</label>
+                                                <input type="text" class="form-control" name="id" value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Name:</label>
+                                                
+                                                <input type="text" class="form-control" name="name" value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Date of Birth:</label>
+                                                <input type="date" class="form-control" name="dob" required="1" value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Designation:</label>
+                                                <input type="text" class="form-control" name="designation" required="1" value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Salary:</label>
+                                                <input type="text" class="form-control" name="salary" required="1" value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Email:</label>
+                                                <input type="email" class="form-control" name="emailaddress" value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Date of Joining:</label>
+                                                <input type="date" class="form-control" name="joining_date" required="1" value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Work Location:</label>
+                                                <input type="text" class="form-control" name="work_location" required="1" value="">
+                                            </div>
+
+
+                                             <div class="form-group">
+                                                <label>Experience:</label>
+                                                <input type="text" class="form-control" name="experience" required="1" value="">
+                                            </div>
+
+
+
+                                            <div class="form-group">
+                                                <label>Address:</label>
+                                                <input type="text" class="form-control" name="address" required="1" value="">
+                                            </div>
+
+
+                                             <div class="form-group">
+                                                <label>Phone:</label>
+                                                <input type="tel" class="form-control" name="phone" pattern="[0-9]{10}" required value="">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Add Employee</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <div class="well">My Linkedin: <a href="https://www.linkedin.com/in/ashokaddanki/"/>Profile</a>
+        <span class="pull-right">My GItHub: <a href="https://github.com/ashokpython/"/>Projects</a></span>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+</html>
