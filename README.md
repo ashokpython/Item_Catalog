@@ -8,6 +8,6 @@
 
 4 The administrator will be able to view all employees and their details
 
-
 Run the requirements.txt file using pip install -r requirements.txt command
+
 psql -h localhost -U myuser -d mydb
